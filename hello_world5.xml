@@ -1,0 +1,212 @@
+<mujoco>
+    <compiler angle="degree" />
+    <default>
+        <geom condim='6' rgba='1 1 1 1' material="muscle_one_mat" friction="0.8 0.5 0.001" density="3000"/>
+        <joint limited="true"/>
+        <!-- <geom contype='1' conaffinity='1' condim='6' rgba='0.8 0.6 .4 1'
+          margin="0.001" solref=".02 1" solimp=".8 .8 .01" material="geom" friction="0.7 0.5 0.001"/> -->
+    </default>
+
+    <option tolerance = "1e-18" cone = "elliptic" timestep = "0.001"/>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" width="1024" height="1024" rgb1=".7 .7 .7"
+            rgb2="1 1 1"/>
+        <texture name="texgeom" type="cube" builtin="flat" mark="cross" width="127" height="1278"
+            rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+        <texture name="texplane" type="2d" builtin="checker" rgb1=".97 .97 .97" rgb2="1 1 1"
+            width="512" height="512"/>
+
+        <texture name="table_texture" type="2d" builtin="flat" rgb1="0.7 0.8 1" width="128" height="128"/>
+        <texture name="object_texture" type="2d" builtin="flat" rgb1="0.2 0.8 0.5" width="128" height="128"/>
+        <texture name="red_bull_text" type="cube" builtin="none" rgb1=".6 .6 .6" filedown="/Users/Petros/Desktop/red_bull.png"/>
+        <texture name="muscle_one_text" type="cube" builtin="checker" rgb1=".1 .1 .1" rgb2=".2 .2 .2" width="100" height="100"/>
+        <texture name="muscle_one_text_joint" type="cube" builtin="checker" rgb1=".6 .6 .6" rgb2=".7 .7 .7" width="100" height="100"/>
+        <texture name="duck_text" type="2d" builtin="flat" rgb1="1 0.7 0" width="128" height="128"/>
+        <texture name = "wood_text" type = "2d" builtin = "none" file="/Users/Petros/Desktop/wood.png"/>
+        <texture name = "laser_text" type = "2d" builtin = "flat" rgb1 = "0 0 0.6" width="128" height="128"/>
+
+        <material name='MatPlane' reflectance='0.3' texture="texplane" texrepeat="1 1" texuniform="true"/>
+        <material name='geom' texture="texgeom" texuniform="true"/>
+        <material name="table_material" texture="table_texture" reflectance="0"/>
+        <material name="object_material" texture="object_texture" reflectance="0"/>
+        <material name="red_bull_mat" texture="red_bull_text" texuniform="false"/>
+        <material name="muscle_one_mat" texture="muscle_one_text" texrepeat="4 4" texuniform="true" />
+        <material name="muscle_one_mat_joint" texture="muscle_one_text_joint" texrepeat="4 4" texuniform="true" />
+        <material name="duck_mat" texture="duck_text"/>
+        <material name="wood_material" texture="wood_text" reflectance="0" texrepeat = "3 3"/>
+        <material name = "laser_material" texture = "laser_text"/>
+
+
+        <mesh file="/Users/Petros/Documents/RL_Thesis/Objects/Duck/duck0.stl" scale="0.155 0.155 0.155"/>
+        <mesh file="/Users/Petros/Documents/RL_Thesis/Objects/Duck/duck1.stl" scale="0.155 0.155 0.155"/>
+        <mesh file="/Users/Petros/Documents/RL_Thesis/Objects/Duck/duck2.stl" scale="0.155 0.155 0.155"/>
+        <mesh file="/Users/Petros/Documents/RL_Thesis/Objects/Duck/duck3.stl" scale="0.155 0.155 0.155"/>
+        <mesh file="/Users/Petros/Documents/RL_Thesis/Objects/Cup.stl" scale="0.006 0.006 0.002"/>
+        <mesh file="/Users/Petros/Documents/RL_Thesis/Objects/Phone.stl" scale="0.003 0.004 0.004"/>
+
+        <!-- <mesh file="Beer.stl" scale="0.13 0.13 0.13"/> -->
+
+    </asset>
+
+    <worldbody>
+        <geom name='floor' pos='0 0 0' size='20 20 .125' type='plane' material="MatPlane" />
+
+        <light mode='targetbodycom' directional='false' diffuse='.8 .8 .8' specular='0.3 0.3 0.3' pos='2 2 4.0' dir='0 0 -1'/>
+        <light mode='targetbodycom' directional='false' diffuse='.8 .8 .8' specular='0.3 0.3 0.3' pos='2 -2 4.0' dir='0 0 -1'/>
+        <light mode='targetbodycom' directional='false' diffuse='.8 .8 .8' specular='0.3 0.3 0.3' pos='-2 2 4.0' dir='0 0 -1'/>
+        <light mode='targetbodycom' directional='false' diffuse='.8 .8 .8' specular='0.3 0.3 0.3' pos='-2 -2 4.0' dir='0 0 -1'/>
+
+
+
+
+        <body pos = "0 0 0.00">
+          <geom type="cylinder" fromto = "0 0 0 0 0 0.15" density = "100" size = "0.75"/>
+          <body pos = "0 0 0.35">
+            <geom type = "capsule" fromto = "0 0 0 0 0 1.1" density="3000" size="0.2"/>
+            <geom type = "cylinder" fromto = "0 0 1.09 0 0 1.4" size = "0.25" material="muscle_one_mat_joint"/>
+            <joint name = "j_0" type = "hinge" axis = "0 0 1" range = "-720 720"/>
+              <body pos = "0 0 1.25">
+                <geom type="box" size="0.8 0.15 0.15" pos="0.8 0 0" material="muscle_one_mat_joint"/>
+                <body pos = "0.8 0 0">
+                  <geom type = "capsule" fromto = "-0.6 0 0 1 0 0" size = "0.13"/>
+                  <joint name = "j_1" type = "slide" axis = "1 0 0" range = "0 3.4"/>
+                  <body pos = "1 0 0">
+                    <geom type = "cylinder" fromto = "0 0 -0.15 0 0 0.15" size = "0.17" material="muscle_one_mat_joint"/>
+                    <joint name = "j_2" type = "hinge" axis = "0 0 1" range = "-720 720"/>
+                    <body pos = "0 0 -0.15">
+                      <geom type="box" size="0.1 0.1 0.325" pos="0 0 -0.2125" material="muscle_one_mat_joint"/>
+                      <body pos = "0 0 -0.6">
+                        <geom type = "capsule" fromto = "0 0 -0.1 0 0 -0.6" size = "0.1"/>
+                        <joint name = "j_3" type = "slide" axis = "0 0 1" range = "-0.15 0.9"/>
+                        <body pos = "0 0 -0.6">
+                          <geom type = "capsule" fromto = "0 0 0 0.1 0 0" size = "0.1"/>
+                          <geom type = "cylinder" fromto = "0 -0.12 0 0 0.12 0" size = "0.1" material="muscle_one_mat_joint"/>
+                          <joint name = "j_4" type = "hinge" axis = "0 1 0" range = "-720 720"/>
+                          <body pos="0.15 0 0" name="end_effector">
+                            <geom name = "end_effector_base" type="box" size="0.05 0.12 0.05" pos = "0 0 0.025"/>
+                            <body pos="0 0.12 0">
+                              <geom type="capsule" fromto="0 0 0 0.2 0.0 0" size="0.045"/>
+                              <site name = "sensor_1_1_2" type = "box" size = "0.033 0.045 0.045" pos = "0.1 0 0" material = "table_material"/>
+                              <site name = "sensor_1_1_3" type = "box" size = "0.033 0.045 0.045" pos = "0.166 0 0" material = "laser_material"/>
+                              <geom type="cylinder" fromto="0 0 0.06 0 0 -0.06" size="0.06" density="3000" material="muscle_one_mat_joint"/>
+                              <joint name="f_1_1" type="hinge" axis="0 0 1" range="-40 40"/>
+                              <body pos = "0.2 0.0 0">
+                                <!-- <site type="cylinder" size = "0.05 0.06" material = "muscle_one_mat_joint"/> -->
+                                <geom type="capsule" fromto="0 0 0 0.13 0.0 0" size="0.045"/>
+                                <site name = "sensor_1_2_1" type = "box" size = "0.029 0.045 0.045" pos = "0.029 0 0" material = "table_material"/>
+                                <site name = "sensor_1_2_2" type = "box" size = "0.029 0.045 0.045" pos = "0.087 0 0" material = "laser_material"/>
+                                <site name = "sensor_1_2_3" type = "box" size = "0.026 0.045 0.045" pos = "0.142 0 0" material = "table_material"/>
+                                <joint name="f_1_2" type="hinge" axis="0 0 1" range="-90 0"/>
+                              </body>
+                            </body>
+                            <body pos="0 -0.12 0">
+                              <geom type="capsule" fromto="0 0 0 0.2 0 0" size="0.045"/>
+                              <site name = "sensor_2_1_2" type = "box" size = "0.033 0.045 0.045" pos = "0.1 0 0" material = "table_material"/>
+                              <site name = "sensor_2_1_3" type = "box" size = "0.033 0.045 0.045" pos = "0.166 0 0" material = "laser_material"/>
+                              <geom type="cylinder" fromto="0 0 0.06 0 0 -0.06" size="0.06" density="3000" material="muscle_one_mat_joint"/>
+                              <joint name="f_2_1" type="hinge" axis="0 0 1" range="-40 40"/>
+                              <body pos = "0.2 0 0">
+                                <!-- <site type="cylinder" size = "0.05 0.06" material = "muscle_one_mat_joint"/> -->
+                                <geom type="capsule" fromto="0 0 0 0.13 0 0" size="0.045"/>
+                                <site name = "sensor_2_2_1" type = "box" size = "0.029 0.045 0.045" pos = "0.029 0 0" material = "table_material"/>
+                                <site name = "sensor_2_2_2" type = "box" size = "0.029 0.045 0.045" pos = "0.087 0 0" material = "laser_material"/>
+                                <site name = "sensor_2_2_3" type = "box" size = "0.026 0.045 0.045" pos = "0.142 0 0" material = "table_material"/>
+                                <joint name="f_2_2" type="hinge" axis="0 0 1" range="0 90"/>
+                              </body>
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+          </body>
+        </body>
+
+        <!-- <body name="red_bull" pos="2.2 0.0 0.2">
+          <freejoint/>
+          <geom name = "red_bull" type="cylinder" size="0.13 0.2" material="red_bull_mat" density="500" />
+        </body> -->
+
+        <body name="red_bull" pos="2.9 0.0 0.25">
+          <freejoint/>
+          <geom name = "red_bull" type="cylinder" size="0.39 0.2" material="object_material" density="100"/>
+          <geom type = "cylinder" size = "0.15 0.045" density = "400" pos = "0 0.4 0" material="object_material" quat = "0.5145998 0.4997868 0.4997868 0.4854002"/>
+        </body>
+
+        <!-- <body name="red_bull" pos = "2.2 0.05 0.2">
+          <freejoint/>
+          <geom name = "red_bull" type="mesh" mesh="duck0" material = "duck_mat" density = "250"/>
+          <geom type="mesh" mesh="duck1" material = "duck_mat" density = "250"/>
+          <geom type="mesh" mesh="duck2" material = "duck_mat" density = "250"/>
+          <geom type="mesh" mesh="duck3" material = "duck_mat" density = "250"/>
+        </body> -->
+
+        <!-- <body name="red_bull" pos="2.3 0.0 0.22">
+          <freejoint/>
+          <geom name = "red_bull" type = "box" size = "0.15 0.08 0.20"  material = "object_material" density ="500" quat = "0.50711 0 0 2.30711"/>
+        </body> -->
+
+
+        <!-- <body name="red_bull" pos="2.3 0.0 0.2">
+          <freejoint/>
+          <geom name = "red_bull" type = "capsule" material = "object_material" size = "0.09" fromto = "-0.2 0 -0.01 -0.2 0 0" density = "500"/>
+          <geom type = "cylinder" size = "0.1" material = "object_material" fromto = "-0.2 0 -0.1 -0.2 0 0.005" density = "500"/>
+          <geom type = "capsule" size = "0.06" material = "object_material" fromto = "-0.2 0 0.05 0.2 0 0.05" density = "500"/>
+          <geom type = "capsule" size = "0.09" material = "object_material" fromto = "0.2 0 -0.01 0.2 0 0" density = "500"/>
+          <geom type = "cylinder" size = "0.1" material = "object_material" fromto = "0.2 0 -0.1 0.2 0 0.005" density = "500"/>
+        </body> -->
+
+        <!-- <body name="red_bull" pos="2.3 0.0 0.12">
+          <freejoint/>
+          <geom name = "red_bull" type = "box" size = "0.18 0.18 0.02"  material = "wood_material" density ="500"/>
+          <body pos = "0.17 0 0.07">
+            <geom type = "box" size = "0.01 0.17 0.07" material = "wood_material" density ="500"/>
+          </body>
+          <body pos = "-0.17 0 0.07">
+            <geom type = "box" size = "0.01 0.17 0.07" material = "wood_material" density ="500"/>
+          </body>
+          <body pos = "0 0.17 0.07">
+            <geom type = "box" size = "0.17 0.01 0.07" material = "wood_material" density ="500"/>
+          </body>
+          <body pos = "0 -0.17 0.07">
+            <geom type = "box" size = "0.17 0.01 0.07" material = "wood_material" density ="500"/>
+          </body>
+        </body> -->
+
+
+
+    </worldbody>
+
+    <sensor>
+      <touch name = "touch_1_1_2" site = "sensor_1_1_2"/>
+      <touch name = "touch_1_1_3" site = "sensor_1_1_3"/>
+      <touch name = "touch_1_2_1" site = "sensor_1_2_1"/>
+      <touch name = "touch_1_2_2" site = "sensor_1_2_2"/>
+      <touch name = "touch_1_2_3" site = "sensor_1_2_3"/>
+      <touch name = "touch_2_1_2" site = "sensor_2_1_2"/>
+      <touch name = "touch_2_1_3" site = "sensor_2_1_3"/>
+      <touch name = "touch_2_2_1" site = "sensor_2_2_1"/>
+      <touch name = "touch_2_2_2" site = "sensor_2_2_2"/>
+      <touch name = "touch_2_2_3" site = "sensor_2_2_3"/>
+
+    </sensor>
+
+    <actuator>
+      <motor gear="200" joint="j_0"/>
+      <motor gear="200" joint="j_1"/>
+      <motor gear="200" joint="j_2"/>
+      <motor gear="200" joint="j_3"/>
+      <motor gear="200" joint="j_4"/>
+
+      <motor joint="f_1_1"/>
+      <motor joint="f_2_1"/>
+      <motor joint="f_1_2"/>
+      <motor joint="f_2_2"/>
+    </actuator>
+
+
+
+</mujoco>
